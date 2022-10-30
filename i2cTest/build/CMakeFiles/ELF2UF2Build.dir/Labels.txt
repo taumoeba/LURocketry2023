@@ -1,0 +1,13 @@
+# Target labels
+ ELF2UF2Build
+# Source files and their labels
+/home/super/LURocketry2023/i2cTest/build/CMakeFiles/ELF2UF2Build
+/home/super/LURocketry2023/i2cTest/build/CMakeFiles/ELF2UF2Build.rule
+/home/super/LURocketry2023/i2cTest/build/CMakeFiles/ELF2UF2Build-complete.rule
+/home/super/LURocketry2023/i2cTest/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-install.rule
+/home/super/LURocketry2023/i2cTest/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-mkdir.rule
+/home/super/LURocketry2023/i2cTest/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-download.rule
+/home/super/LURocketry2023/i2cTest/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-update.rule
+/home/super/LURocketry2023/i2cTest/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-patch.rule
+/home/super/LURocketry2023/i2cTest/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-configure.rule
+/home/super/LURocketry2023/i2cTest/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-build.rule
