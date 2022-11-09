@@ -2207,6 +2207,14 @@ CMakeFiles/i2cTest.dir/home/super/pico/pico-sdk/src/rp2_common/pico_unique_id/un
  generated/pico_base/pico/version.h
 CMakeFiles/i2cTest.dir/i2cTest.c.obj
  /home/super/LURocketry2023/i2cTest/i2cTest.c
+ /home/super/LURocketry2023/rp2040_berryimu/IMU.cpp
+ /home/super/LURocketry2023/rp2040_berryimu/IMU.h
+ /home/super/LURocketry2023/rp2040_berryimu/LIS3MDL.h
+ /home/super/LURocketry2023/rp2040_berryimu/LSM6DSL.h
+ /home/super/LURocketry2023/rp2040_berryimu/LSM9DS0.h
+ /home/super/LURocketry2023/rp2040_berryimu/LSM9DS1.h
+ /home/super/LURocketry2023/rp2040_i2c_tools/regops.c
+ /home/super/LURocketry2023/rp2040_i2c_tools/regops.h
  /home/super/pico/pico-sdk/src/boards/include/boards/pico.h
  /home/super/pico/pico-sdk/src/common/pico_base/include/pico.h
  /home/super/pico/pico-sdk/src/common/pico_base/include/pico/assert.h

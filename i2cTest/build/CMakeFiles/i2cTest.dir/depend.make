@@ -2206,6 +2206,14 @@ CMakeFiles/i2cTest.dir/home/super/pico/pico-sdk/src/rp2_common/pico_unique_id/un
 CMakeFiles/i2cTest.dir/home/super/pico/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj: generated/pico_base/pico/version.h
 
 CMakeFiles/i2cTest.dir/i2cTest.c.obj: ../i2cTest.c
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_berryimu/IMU.cpp
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_berryimu/IMU.h
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_berryimu/LIS3MDL.h
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_berryimu/LSM6DSL.h
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_berryimu/LSM9DS0.h
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_berryimu/LSM9DS1.h
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_i2c_tools/regops.c
+CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/LURocketry2023/rp2040_i2c_tools/regops.h
 CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/pico/pico-sdk/src/boards/include/boards/pico.h
 CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/pico/pico-sdk/src/common/pico_base/include/pico.h
 CMakeFiles/i2cTest.dir/i2cTest.c.obj: /home/super/pico/pico-sdk/src/common/pico_base/include/pico/assert.h

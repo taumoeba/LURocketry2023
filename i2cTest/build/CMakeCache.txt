@@ -46,13 +46,14 @@ CMAKE_ASM_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 //Flags used by the ASM compiler during RELWITHDEBINFO builds.
 CMAKE_ASM_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//No help, variable specified on the command line.
-CMAKE_BUILD_TYPE:STRING=Debug
+//Choose the type of build, options are: 'Debug', 'Release', 'MinSizeRel',
+// 'RelWithDebInfo'.
+CMAKE_BUILD_TYPE:STRING=Release
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
-//No help, variable specified on the command line.
+//C++ compiler
 CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/arm-none-eabi-g++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
@@ -78,7 +79,7 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 //Flags used by the CXX compiler during RELWITHDEBINFO builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//No help, variable specified on the command line.
+//C compiler
 CMAKE_C_COMPILER:FILEPATH=/usr/bin/arm-none-eabi-gcc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
@@ -122,8 +123,8 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+//Enable/Disable output of compile commands during generation.
+CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=/usr/local
@@ -307,12 +308,6 @@ pico_sdk_BINARY_DIR:STATIC=/home/super/LURocketry2023/i2cTest/build/pico-sdk
 //Value Computed by CMake
 pico_sdk_SOURCE_DIR:STATIC=/home/super/pico/pico-sdk
 
-//Value Computed by CMake
-test_project_BINARY_DIR:STATIC=/home/super/LURocketry2023/i2cTest/build
-
-//Value Computed by CMake
-test_project_SOURCE_DIR:STATIC=/home/super/LURocketry2023/i2cTest
-
 
 ########################
 # INTERNAL cache entries
@@ -489,7 +484,7 @@ PICO_BOOT_STAGE2_DIR:INTERNAL=/home/super/pico/pico-sdk/src/rp2_common/boot_stag
 PICO_CMAKE_PRELOAD_PLATFORM_DIR:INTERNAL=/home/super/pico/pico-sdk/cmake/preload/platforms
 PICO_CMAKE_PRELOAD_PLATFORM_FILE:INTERNAL=/home/super/pico/pico-sdk/cmake/preload/platforms/rp2040.cmake
 PICO_COMPILER_ASM:INTERNAL=/usr/bin/arm-none-eabi-gcc
-PICO_DOXYGEN_EXCLUDE_PATHS:INTERNAL= /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs
+PICO_DOXYGEN_EXCLUDE_PATHS:INTERNAL= /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs /home/super/pico/pico-sdk/src/rp2_common/cmsis /home/super/pico/pico-sdk/src/rp2040/hardware_regs
 PICO_DOXYGEN_PATHS:INTERNAL= /home/super/pico/pico-sdk/src/common /home/super/pico/pico-sdk/lib/cyw43-driver/src /home/super/pico/pico-sdk/src/rp2_common /home/super/pico/pico-sdk/src/rp2040
 PICO_NO_HARDWARE:INTERNAL=0
 PICO_ON_DEVICE:INTERNAL=1

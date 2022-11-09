@@ -2,6 +2,13 @@
 #include "stdlib.h"
 #include "hardware/i2c.h"
 
+/// @brief Write data to a register of a I2C device
+/// @param i2c i2c instance to use
+/// @param addr i2c address of device
+/// @param reg address of register
+/// @param buf pointer to data to send
+/// @param nbytes number of bytes to send
+/// @return Returns: Number of bytes written, or PICO_ERROR_GENERIC if address not acknowledged, no device present.
 int reg_write(i2c_inst_t *i2c,
                 const uint addr,
                 const uint8_t reg,
@@ -24,6 +31,13 @@ int reg_write(i2c_inst_t *i2c,
     return num_bytes_read;
 }
 
+/// @brief Read data from register of I2C device
+/// @param i2c i2c instance to use
+/// @param addr i2c address of device
+/// @param reg address of register to read from
+/// @param buf pointer to buffer to store data
+/// @param nbytes number of bytes to be read
+/// @return Returns: Number of bytes written, or PICO_ERROR_GENERIC if address not acknowledged, no device present.
 int reg_read(i2c_inst_t *i2c,
                 const uint addr,
                 const uint8_t reg,

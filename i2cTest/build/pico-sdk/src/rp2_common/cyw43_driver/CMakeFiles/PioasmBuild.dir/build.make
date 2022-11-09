@@ -104,7 +104,7 @@ pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-co
 pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-configure: pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-update
 pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-configure: pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-patch
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/super/LURocketry2023/i2cTest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Performing configure step for 'PioasmBuild'"
-	cd /home/super/LURocketry2023/i2cTest/build/pioasm && /usr/bin/cmake "-GUnix Makefiles" -C/home/super/LURocketry2023/i2cTest/build/pico-sdk/src/rp2_common/cyw43_driver/pioasm/tmp/PioasmBuild-cache-Debug.cmake /home/super/pico/pico-sdk/tools/pioasm
+	cd /home/super/LURocketry2023/i2cTest/build/pioasm && /usr/bin/cmake "-GUnix Makefiles" -C/home/super/LURocketry2023/i2cTest/build/pico-sdk/src/rp2_common/cyw43_driver/pioasm/tmp/PioasmBuild-cache-Release.cmake /home/super/pico/pico-sdk/tools/pioasm
 	cd /home/super/LURocketry2023/i2cTest/build/pioasm && /usr/bin/cmake -E touch /home/super/LURocketry2023/i2cTest/build/pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-configure
 
 pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-build: pico-sdk/src/rp2_common/cyw43_driver/pioasm/src/PioasmBuild-stamp/PioasmBuild-configure
