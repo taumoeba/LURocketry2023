@@ -6,6 +6,7 @@ import busio
 import digitalio
 import microcontroller
 import storage
+import os
 
 # Use any pin that is not taken by SPI
 SD_CS = board.D25
@@ -19,11 +20,16 @@ cs = digitalio.DigitalInOut(SD_CS)
 sdcard = adafruit_sdcard.SDCard(spi, cs)
 vfs = storage.VfsFat(sdcard)
 storage.mount(vfs, "/sd")
+path="/sd"
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 accel_gyro = LSM6DS(i2c)
 
 starttime = time.monotonic()
+
+fileCount = 0
+for file in os.listdir(path):
+    fileCount = fileCount + 1
 
 print("This is where the fun begins\n")
 
@@ -31,7 +37,7 @@ while True:
     acceleration = accel_gyro.acceleration
     gyro = accel_gyro.gyro
 
-    with open("/sd/imu_data.txt", "a") as f:
+    with open("/sd/imu_data_%d.txt" %fileCount, "a") as f:
         led.value = True  # turn on LED to indicate we're writing to the file
         currenttime = str(time.monotonic() - starttime)
         f.write(currenttime+","+str(acceleration[0])+","+str(acceleration[1])+","+str(acceleration[2])+","+str(gyro[0])+","+str(gyro[1])+","+str(gyro[2])+"\n")
