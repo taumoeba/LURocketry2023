@@ -1,13 +1,9 @@
-// LoRa 9x_TX
-// -*- mode: C++ -*-
-// Example sketch showing how to create a simple messaging client (transmitter)
-// with the RH_RF95 class. RH_RF95 class does not provide for addressing or
-// reliability, so you should only use RH_RF95 if you do not need the higher
-// level messaging abilities.
-// It is designed to work with the other example LoRa9x_RX
-
+#include <Arduino.h>   // required before wiring_private.h
+#include <TinyGPS++.h>
+#include "wiring_private.h" // pinPeripheral() function
 #include <SPI.h>
 #include <RH_RF95.h>
+#include <string.h>
 
 #define RFM95_CS 10
 #define RFM95_RST 11
@@ -19,16 +15,26 @@
 // Singleton instance of the radio driver
 RH_RF95 rf95(RFM95_CS, RFM95_INT);
 
-void setup() 
+Uart Serial2 (&sercom3, SDA, SCL, SERCOM_RX_PAD_1, UART_TX_PAD_0);
+                     // TX   RX
+void SERCOM3_Handler()
 {
+  Serial2.IrqHandler();
+}
+
+TinyGPSPlus gps;
+
+void setup() {
+  Serial.begin(9600);
+
+  Serial2.begin(9600);
+  
+  // Assign pins 10 & 11 SERCOM functionality
+  pinPeripheral(SDA, PIO_SERCOM);
+  pinPeripheral(SCL, PIO_SERCOM);
+
   pinMode(RFM95_RST, OUTPUT);
   digitalWrite(RFM95_RST, HIGH);
-
-  while (!Serial);
-  Serial.begin(9600);
-  delay(100);
-
-  Serial.println("Arduino LoRa TX Test!");
 
   // manual reset
   digitalWrite(RFM95_RST, LOW);
@@ -48,7 +54,7 @@ void setup()
     while (1);
   }
   Serial.print("Set Freq to: "); Serial.println(RF95_FREQ);
-  
+
   // Defaults after init are 434.0MHz, 13dBm, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on
 
   // The default transmitter power is 13dBm, using PA_BOOST.
@@ -58,48 +64,140 @@ void setup()
 }
 
 int16_t packetnum = 0;  // packet counter, we increment per xmission
+char in[2] = {'0','0'};
 
-void loop()
+uint8_t i=0;
+void loop() {
+  
+  /* // ONLY READING FROM SERIAL
+  while (Serial2.available() > 0){
+    //Serial.println("available");
+    Serial.write(Serial2.read());
+  }
+  */
+
+  /* // READING FROM GPS AND PRINTING TO SERIAL
+  while (Serial2.available() > 0)
+    if (gps.encode(Serial2.read()))
+      showData();
+  if (millis() > 5000 && gps.charsProcessed() < 10)
+  {
+    Serial.println("GPS NOT DETECTED!");
+    //while(true);
+  }
+  */
+
+  // READING FROM GPS AND TRANSMITTING OVER RADIO
+  while (Serial2.available() > 0)
+    if (gps.encode(Serial2.read()))
+      sendData();
+  if (millis() > 5000 && gps.charsProcessed() < 10)
+  {
+    Serial.println("GPS NOT DETECTED!");
+    //while(true);
+  }
+  
+ // delay(1000);
+}
+
+void showData()
 {
-  Serial.println("Sending to rf95_server");
-  // Send a message to rf95_server
-  
-  char radiopacket[20] = "Hello World #      ";
-  itoa(packetnum++, radiopacket+13, 10);
-  Serial.print("Sending "); Serial.println(radiopacket);
-  radiopacket[19] = 0;
-  
-  Serial.println("Sending..."); delay(10);
-  rf95.send((uint8_t *)radiopacket, 20);
-
-  Serial.println("Waiting for packet to complete..."); delay(10);
-  rf95.waitPacketSent();
-/*
-  // Now wait for a reply
-  uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
-  uint8_t len = sizeof(buf);
-
-
-  Serial.println("Waiting for reply..."); delay(10);
-  if (rf95.waitAvailableTimeout(1000))
-  { 
-    // Should be a reply message for us now   
-    if (rf95.recv(buf, &len))
-   {
-      Serial.print("Got reply: ");
-      Serial.println((char*)buf);
-      Serial.print("RSSI: ");
-      Serial.println(rf95.lastRssi(), DEC);    
-    }
-    else
-    {
-      Serial.println("Receive failed");
-    }
+  if (gps.location.isValid())
+  {
+    Serial.print("Latitude: ");
+    Serial.println(gps.location.lat(), 6);
+    Serial.print("Longitude: ");
+    Serial.println(gps.location.lng(), 6);
+    Serial.print("Altitude: ");
+    Serial.println(gps.altitude.meters());
   }
   else
   {
-    Serial.println("No reply, is there a listener around?");
+    Serial.println("Location is not available");
   }
- */
-  delay(1000);
+  
+  Serial.print("Date: ");
+  if (gps.date.isValid())
+  {
+    Serial.print(gps.date.month());
+    Serial.print("/");
+    Serial.print(gps.date.day());
+    Serial.print("/");
+    Serial.println(gps.date.year());
+  }
+  else
+  {
+    Serial.println("Not Available");
+  }
+
+  Serial.print("Time: ");
+  if (gps.time.isValid())
+  {
+    if (gps.time.hour() < 10) Serial.print(F("0"));
+    Serial.print(gps.time.hour());
+    Serial.print(":");
+    if (gps.time.minute() < 10) Serial.print(F("0"));
+    Serial.print(gps.time.minute());
+    Serial.print(":");
+    if (gps.time.second() < 10) Serial.print(F("0"));
+    Serial.print(gps.time.second());
+    Serial.print(".");
+    if (gps.time.centisecond() < 10) Serial.print(F("0"));
+    Serial.println(gps.time.centisecond());
+  }
+  else
+  {
+    Serial.println("Not Available");
+  }
+
+  Serial.println();
+  Serial.println();
+  //delay(5000);
+}
+
+void sendData()
+{
+  if (gps.location.isValid())
+  {
+    Serial.print("Latitude: ");
+    Serial.println(gps.location.lat(), 6);
+    double lati = gps.location.lat();
+    double longi = gps.location.lng();
+    Serial.println(lati,6);
+    Serial.print("Longitude: ");
+    Serial.println(gps.location.lng(), 6);
+    Serial.println(longi,6);
+    char longBuf[10];
+    char latBuf[9];
+    char * cp = latBuf;
+    char * cp2 = longBuf;
+    unsigned long l, l2, rem, rem2;
+    if(lati<0) {
+      *cp++ = '-';
+      lati = -lati;
+    }
+    if(longi<0) {
+      *cp2++ = '-';
+      longi = -longi;
+    }
+    l = (unsigned long)lati;
+    l2 = (unsigned long)longi;
+    lati -= (double)l;
+    longi -= (double)l2;
+    rem = (unsigned long)(lati*1e6);
+    rem2 = (unsigned long)(longi*1e6);
+    sprintf(cp,"%lu.%6.6lu", l, rem);
+    sprintf(cp2, "%lu.%6.6lu", l2, rem2);
+    
+    for(int i=0; i<9; i++) Serial.print(latBuf[i]);
+    Serial.println();
+    for(int i=0; i<10; i++) Serial.print(longBuf[i]);
+    Serial.println();
+    rf95.send((uint8_t *)latBuf, 9);
+    rf95.send((uint8_t *)longBuf, 10);
+  }
+  else
+  {
+    Serial.println("Location is not available");
+  }
 }
