@@ -65,8 +65,8 @@ void setup() {
 
 int16_t packetnum = 0;  // packet counter, we increment per xmission
 char in[2] = {'0','0'};
-
-<<<<<<< Updated upstream
+/*
+//<<<<<<< Updated upstream
 uint8_t i=0;
 void loop() {
   
@@ -86,7 +86,7 @@ void loop() {
     Serial.println("GPS NOT DETECTED!");
     //while(true);
   }
-  */
+  
 
   // READING FROM GPS AND TRANSMITTING OVER RADIO
   while (Serial2.available() > 0)
@@ -99,7 +99,7 @@ void loop() {
   }
   
  // delay(1000);
-}
+}*/
 
 void showData()
 {
@@ -175,14 +175,17 @@ void sendData()
     unsigned long l, l2, rem, rem2;
     if(lati<0) {
       *cp++ = '-';
-      lati = -lati;
-=======
+      lati = -lati;}
+  }
+}
+//=======
 void loop()
 {
   if(Serial.available() > 0){
     in[0] = Serial.read();
     rf95.send((uint8_t *)in, 2);
   }
+}
   //delay(500);
   /*
   Serial.println("Sending to rf95_server");
@@ -248,5 +251,5 @@ void loop()
  
   delay(1000);
  */
-}
->>>>>>> Stashed changes
+
+//>>>>>>> Stashed changes

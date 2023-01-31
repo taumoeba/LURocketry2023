@@ -73,7 +73,7 @@ void loop()
     {
       Serial.print((char*)buf);
     }
-  }
+  
   /*
   if (rf95.available())
   {
@@ -97,10 +97,10 @@ void loop()
     {
       Serial.println("Receive failed");
     }
-  }
-<<<<<<< Updated upstream
 }
-=======
-  */
-}
->>>>>>> Stashed changes
+//<<<<<<< Updated upstream
+
+//=======
+  
+
+//>>>>>>> Stashed changes
