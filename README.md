@@ -6,7 +6,6 @@ Main microcontroller board: Adafruit Feather RP2040
 
 Required libraries for GPS microcontrollers:
 
-RadioHead http://www.airspayce.com/mikem/arduino/RadioHead/
-(Note: Ignore the compilation warning this library gives you)
-
-TinyGPS++ https://github.com/mikalhart/TinyGPSPlus
+- RadioHead http://www.airspayce.com/mikem/arduino/RadioHead/
+(Note: Either delete RH_LoRaFileOps.cpp and RH_LoRaFileOps.h or just ignore the compilation warning this library gives you.)
+- TinyGPS++ https://github.com/mikalhart/TinyGPSPlus
