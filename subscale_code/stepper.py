@@ -14,9 +14,9 @@ led.direction = digitalio.Direction.OUTPUT
 kit = MotorKit(i2c=board.I2C())
 
 while True:
-    # forward is clockwise
+    # forward is clockwise. for payload, backward is "up"
     res = kit.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
-    print(res)
+    #print(res)
     #led.value = True
     #time.sleep(0.5)
     #led.value = False
