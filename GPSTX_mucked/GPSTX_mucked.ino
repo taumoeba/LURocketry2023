@@ -91,8 +91,12 @@ void setup() {
   Serial.println("Serial 2 Connected");
 }
 
+int16_t packetnum = 0;  // packet counter, we increment per xmission
+char in[2] = {'0','0'};
+char test[7] = {'T','a','l','k','i','n','g'};
 void loop(){
   Serial.println("Talking");
+  rf95.send((uint8_t *)test, 7);
   //if GPS there, show data, is Serial2 doesn't work, show error
   if(Serial2.available()){
     showData();
