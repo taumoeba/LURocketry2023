@@ -104,40 +104,15 @@ while True:
     else:
         iter = 0
     
-    if flight_stage==0: # on pad
-        if direction==1 and mean_alt - last_mean_alt > 5:
-            flight_stage = 1
-        else:
-            time.sleep(0.1)
-    elif flight_stage==1: # ascending
-        if direction==-1 and mean_alt - last_mean_alt < -5:
-            flight_stage = 2
-    elif flight_stage==2: # descending
-        if direction==0:
-            flight_stage = 3
-    elif flight_stage==3: # landed
-        time.sleep(10) # make sure everything has settled down
-    elif flight_stage==4: # extending
-        # extend payload using stepper
-        curr = time.time()
-        while time.time() - curr <= 5400: # 90 mins, check
-            steps = kit.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
-            time.sleep(0.001)
-    elif flight_stage==5: # taking pics
-        # rotate camera
-        curr = time.time()
-        bigServo.throttle = 0.1
-        while time.time() - curr <= 2:
-            time.sleep(0)
-        bigServo.throttle = 0
-        
-        # rotate camera back
-        curr = time.time()
-        bigServo.throttle = -0.1
-        while time.time() - curr <= 2:
-            time.sleep(0)
-        bigServo.throttle = 0
-        
-        # take pics
+    print("")
+    print(alt2)
+    print(mean_alt-last_mean_alt)
+    print(direction)
+    if mean_alt-last_mean_alt > 5:
+        print("Ascending!")
+    elif mean_alt-last_mean_alt < -5:
+        print("Descending!")
+    
+    time.sleep(0.1)
         
 

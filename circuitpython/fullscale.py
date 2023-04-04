@@ -1,36 +1,17 @@
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
-# SPDX-License-Identifier: MIT
-
 import time
 import board
 import math
 from adafruit_lsm6ds.lsm6dsox import LSM6DSOX as LSM6DS
 import adafruit_bmp3xx
-
-# To use LSM6DS33, comment out the LSM6DSOX import line
-# and uncomment the next line
-# from adafruit_lsm6ds.lsm6ds33 import LSM6DS33 as LSM6DS
-
-# To use ISM330DHCX, comment out the LSM6DSOX import line
-# and uncomment the next line
-# from adafruit_lsm6ds.lsm330dhcx import ISM330DHCX as LSM6DS
-
-# To use LSM6DS3TR-C, comment out the LSM6DSOX import line
-# and uncomment the next line
-# from adafruit_lsm6ds.lsm6ds3 import LSM6DS3 as LSM6DS
-
-#from adafruit_lis3mdl import LIS3MDL
-
-i2c = board.I2C()  # uses board.SCL and board.SDA
-accel_gyro = LSM6DS(i2c)
-bmp = adafruit_bmp3xx.BMP3XX_I2C(i2c)
-#mag = LIS3MDL(i2c)
-
 import digitalio
 import pulseio
 from adafruit_motor import stepper
 from adafruit_motor import servo
 from adafruit_motorkit import MotorKit
+
+i2c = board.I2C()  # uses board.SCL and board.SDA
+accel_gyro = LSM6DS(i2c)
+bmp = adafruit_bmp3xx.BMP3XX_I2C(i2c)
 
 kit = MotorKit(i2c=board.I2C())
 led = digitalio.DigitalInOut(board.D13)
@@ -54,37 +35,6 @@ while True:
     gyro = accel_gyro.gyro
     alt = bmp.altitude
     alt2 = alt - ground_alt
-    #magnetic = mag.magnetic
-    #print("Acceleration: X:{0:7.2f}, Y:{1:7.2f}, Z:{2:7.2f} m/s^2".format(*acceleration))
-    #print("Gyro          X:{0:7.2f}, Y:{1:7.2f}, Z:{2:7.2f} rad/s".format(*gyro))
-    #print("Magnetic      X:{0:7.2f}, Y:{1:7.2f}, Z:{2:7.2f} uT".format(*magnetic))
-    #print(acceleration[0]+GRAVITY)
-    """ ALTITUDE USING ACCELEROMETER (OLD)
-    if acceleration[0]+GRAVITY > 0.5: # ascending
-        direction_queue[iterator] = 1
-    elif acceleration[0]+GRAVITY < -0.5: # descending
-        direction_queue[iterator] = -1
-    #else:
-    #    direction_queue[iterator] = 0
-    mean = 0
-    for i in range(len(direction_queue)):
-        mean += direction_queue[i]
-    last_dir = direction
-    if mean > 0:
-        direction = 1
-    if mean < 0:
-        direction = -1
-    if last_dir != direction:
-        print(direction_queue)
-        if(direction == 1):
-            print("Ascending!")
-        else: 
-            print("Descending!")
-    if iterator < 9:
-        iterator += 1
-    else:
-        iterator = 0
-    """
     
     alt_queue[iter] = alt;
     last_mean_alt = mean_alt
