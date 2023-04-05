@@ -8,10 +8,26 @@ import pulseio
 from adafruit_motor import stepper
 from adafruit_motor import servo
 from adafruit_motorkit import MotorKit
+import microcontroller
+import storage
+import os
 
+SD_CS = board.D25
 i2c = board.I2C()  # uses board.SCL and board.SDA
 accel_gyro = LSM6DS(i2c)
 bmp = adafruit_bmp3xx.BMP3XX_I2C(i2c)
+
+# Connect to the card and mount the filesystem.
+spi = busio.SPI(board.SCK, board.MOSI, board.MISO)
+cs = digitalio.DigitalInOut(SD_CS)
+sdcard = adafruit_sdcard.SDCard(spi, cs)
+vfs = storage.VfsFat(sdcard)
+storage.mount(vfs, "/sd")
+path="/sd"
+
+fileCount = 0
+for file in os.listdir(path):
+    fileCount = fileCount + 1
 
 kit = MotorKit(i2c=board.I2C())
 led = digitalio.DigitalInOut(board.D13)
@@ -35,6 +51,7 @@ while True:
     gyro = accel_gyro.gyro
     alt = bmp.altitude
     alt2 = alt - ground_alt
+    # set target gyro values
     
     alt_queue[iter] = alt;
     last_mean_alt = mean_alt
@@ -73,6 +90,7 @@ while True:
         while time.time() - curr <= 5400: # 90 mins, check
             steps = kit.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
             time.sleep(0.001)
+        # It's extended, now rotate until gyro says camera is upright
     elif flight_stage==5: # taking pics
         # rotate camera
         curr = time.time()
@@ -90,4 +108,8 @@ while True:
         
         # take pics
         
-
+        # store pics on sd card
+        #with open("/sd/imu_data_%d.txt" %fileCount, "a") as f:
+            #currenttime = str(time.monotonic() - starttime)
+            #f.write(currenttime+","+str(acceleration[0])+","+str(acceleration[1])+","+str(acceleration[2])+","+str(gyro[0])+","+str(gyro[1])+","+str(gyro[2])+"\n")
+        

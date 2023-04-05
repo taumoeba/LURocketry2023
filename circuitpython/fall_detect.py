@@ -4,8 +4,10 @@
 import time
 import board
 import math
+import busio
 from adafruit_lsm6ds.lsm6dsox import LSM6DSOX as LSM6DS
 import adafruit_bmp3xx
+import pwmio
 
 # To use LSM6DS33, comment out the LSM6DSOX import line
 # and uncomment the next line
@@ -22,21 +24,10 @@ import adafruit_bmp3xx
 #from adafruit_lis3mdl import LIS3MDL
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
-accel_gyro = LSM6DS(i2c)
+#i2c = busio.I2C(board.SCL, board.SDA)
+#accel_gyro = LSM6DS(i2c)
 bmp = adafruit_bmp3xx.BMP3XX_I2C(i2c)
 #mag = LIS3MDL(i2c)
-
-import digitalio
-import pulseio
-from adafruit_motor import stepper
-from adafruit_motor import servo
-from adafruit_motorkit import MotorKit
-
-kit = MotorKit(i2c=board.I2C())
-led = digitalio.DigitalInOut(board.D13)
-led.direction = digitalio.Direction.OUTPUT
-bigPWM = pulseio.PWMOut(board.D13, frequency=50)
-bigServo = servo.ContinuousServo(bigPWM, min_pulse=750, max_pulse=2250)
 
 GRAVITY = 9.80665
 direction = 0 # -1=down, 0=stationary, 1=up
@@ -47,11 +38,18 @@ bmp.sea_level_pressure = 1013.25 # 1 atmosphere, millibars
 ground_alt = bmp.altitude # meters
 alt_queue = [ground_alt, ground_alt, ground_alt, ground_alt, ground_alt, ground_alt, ground_alt, ground_alt, ground_alt, ground_alt]
 last_alt_avg = ground_alt
-iter = 0
+iterator = 0
+mean_alt = ground_alt
+last_mean_alt = mean_alt
+buzzer = pwmio.PWMOut(board.D6, variable_frequency=True)
+buzzer.frequency = 440
+OFF = 0
+ON = 2**15
+tstamp = time.time()
 
 while True:
-    acceleration = accel_gyro.acceleration
-    gyro = accel_gyro.gyro
+    #acceleration = accel_gyro.acceleration
+    #gyro = accel_gyro.gyro
     alt = bmp.altitude
     alt2 = alt - ground_alt
     #magnetic = mag.magnetic
@@ -86,33 +84,45 @@ while True:
         iterator = 0
     """
     
-    alt_queue[iter] = alt;
-    last_mean_alt = mean_alt
-    mean_alt = 0
-    for i in range(10):
-        mean_alt += alt_queue[alt]
-    mean_alt = mean_alt/10
-    if mean_alt - last_mean_alt > 1:
-        direction = 1 # ascending
-    elif mean_alt - last_mean_alt < -1:
-        direction = -1 # descending
-    else:
-        direction = 0 # stationary
+    alt_queue[iterator] = alt;
         
-    if iter < 9:
-        iter += 1
+    if iterator < 9:
+        iterator += 1
     else:
-        iter = 0
+        iterator = 0
+        last_mean_alt = mean_alt
+        mean_alt = 0
+        for i in range(10):
+            mean_alt += alt_queue[i]
+        mean_alt = mean_alt/10
+        if mean_alt - last_mean_alt > 1:
+            direction = 1 # ascending
+        elif mean_alt - last_mean_alt < -1:
+            direction = -1 # descending
+        else:
+            direction = 0 # stationary
     
     print("")
-    print(alt2)
-    print(mean_alt-last_mean_alt)
+    print(alt2) # difference from ground
+    print(mean_alt-last_mean_alt) # difference from last time
     print(direction)
-    if mean_alt-last_mean_alt > 5:
+    print(alt_queue)
+    buzzer.frequency = 262
+    #if mean_alt-last_mean_alt > 3:
+    if direction == 1:
         print("Ascending!")
-    elif mean_alt-last_mean_alt < -5:
+        buzzer.duty_cycle = ON
+        buzzer.frequency = 440
+    #elif mean_alt-last_mean_alt < -3:
+    elif direction == -1:
         print("Descending!")
+        buzzer.duty_cycle = ON
+        buzzer.frequency = 392
+    
+    if time.time()-tstamp > 3:
+        buzzer.duty_cycle = ON
+        tstamp = time.time()
     
     time.sleep(0.1)
         
-
+    buzzer.duty_cycle = OFF
